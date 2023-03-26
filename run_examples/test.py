@@ -124,8 +124,7 @@ if __name__ == '__main__':
     logger.info('==========================')
     test_dataset = CandidatesDataset(test_ucands)
     test_loader = get_dataloader(test_dataset, batch_size=128, shuffle=False, num_workers=0)
-    preds = model.rank(test_loader) # np.array (u, topk)
-
+    preds = model.full_rank(test_u) # np.array (u, topk)
     #preds: [num_users, num_items]
     final_preds = [] #preds after filtering
     for user_index in range(len(test_u)):

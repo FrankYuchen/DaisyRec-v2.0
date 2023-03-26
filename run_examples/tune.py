@@ -131,7 +131,11 @@ if __name__ == '__main__':
     splitter = TestSplitter(config)
     train_index, test_index = splitter.split(df)
     train_set, test_set = df.iloc[train_index, :].copy(), df.iloc[test_index, :].copy()
-
+    # get rated data
+    raw_rated = dict(train_set.groupby(by=config['UID_NAME'])[config['IID_NAME']].unique())
+    rated = {}
+    for user in raw_rated:
+        rated[user] = set(raw_rated[user])
     ''' define optimization target function '''
     def objective(trial):
         global TRIAL_CNT
@@ -209,10 +213,22 @@ if __name__ == '__main__':
             logger.info('==========================')
             val_dataset = CandidatesDataset(val_ucands)
             val_loader = get_dataloader(val_dataset, batch_size=128, shuffle=False, num_workers=0)
-            preds = model.rank(val_loader) 
+            preds = model.full_rank(val_u)
+
+            final_preds = []  # preds after filtering
+            for user_index in range(len(val_u)):
+                user = val_u[user_index]
+                recommended = []
+                index = 0
+                while len(recommended) != config['topk']:
+                    if preds[user_index, index] not in rated[user]:
+                        recommended.append(preds[user_index, index])
+                    index += 1
+                final_preds.append(np.asarray(recommended))
+            final_preds = np.asarray(final_preds)
 
             ''' calculating KPIs '''
-            kpi = metrics_config[kpi_name](val_ur, preds, val_u)
+            kpi = metrics_config[kpi_name](val_ur, final_preds, val_u)
             kpis.append(kpi)
         
         TRIAL_CNT += 1
