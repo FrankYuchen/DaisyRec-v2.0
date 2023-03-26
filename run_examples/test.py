@@ -21,7 +21,7 @@ from daisy.utils.config import init_seed, init_config, init_logger
 from daisy.utils.sampler import BasicNegtiveSampler, SkipGramNegativeSampler
 from daisy.utils.dataset import get_dataloader, BasicDataset, CandidatesDataset, AEDataset
 from daisy.utils.utils import ensure_dir, get_ur, get_history_matrix, build_candidates_set, get_inter_matrix
-
+import numpy as np
 model_config = {
     'mostpop': MostPop,
     'slim': SLiM,
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     logger = getLogger()
     logger.info(config)
     config['logger'] = logger
-    
+
     ''' Test Process for Metrics Exporting '''
     reader, processor = RawDataReader(config), Preprocessor(config)
     df = reader.get_data()
@@ -64,6 +64,13 @@ if __name__ == '__main__':
     splitter = TestSplitter(config)
     train_index, test_index = splitter.split(df)
     train_set, test_set = df.iloc[train_index, :].copy(), df.iloc[test_index, :].copy()
+
+    #get rated data
+    raw_rated = dict(train_set.groupby(by=config['UID_NAME'])[config['IID_NAME']].unique())
+    rated = {}
+    for user in raw_rated:
+        rated[user] = set(raw_rated[user])
+
 
     ''' get ground truth '''
     test_ur = get_ur(test_set)
@@ -119,6 +126,22 @@ if __name__ == '__main__':
     test_loader = get_dataloader(test_dataset, batch_size=128, shuffle=False, num_workers=0)
     preds = model.rank(test_loader) # np.array (u, topk)
 
+    #preds: [num_users, num_items]
+    final_preds = [] #preds after filtering
+    for user_index in range(len(test_u)):
+        user = test_u[user_index]
+        recommended = []
+        index = 0
+        while len(recommended) != config['topk']:
+            if preds[user_index,index] not in rated[user]:
+                recommended.append(preds[user_index,index])
+            index+=1
+        final_preds.append(np.asarray(recommended))
+    final_preds = np.asarray(final_preds)
+
+
+
+
     ''' calculating KPIs '''
     logger.info('Save metric@k result to res folder...')
     result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/"
@@ -128,5 +151,5 @@ if __name__ == '__main__':
     ensure_dir(result_save_path)
     config['res_path'] = result_save_path
 
-    results = calc_ranking_results(test_ur, preds, test_u, config)
+    results = calc_ranking_results(test_ur, final_preds, test_u, config)
     results.to_csv(f'{result_save_path}{algo_prefix}_{common_prefix}_kpi_results.csv', index=False)
