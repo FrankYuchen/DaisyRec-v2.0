@@ -232,10 +232,8 @@ def HR(test_ur, pred_ur, test_u):
         u = test_u[idx]
         gt = test_ur[u]
         pred = pred_ur[idx]
-
         r = np.in1d(pred, list(gt))
         res.append(1 if r.sum() else 0)
-
     return np.mean(res)
 
 def AUC(test_ur, pred_ur, test_u):
@@ -245,7 +243,6 @@ def AUC(test_ur, pred_ur, test_u):
         u = test_u[idx]
         gt = test_ur[u]
         pred = pred_ur[idx]
-
         r = np.in1d(pred, list(gt))
         pos_num = r.sum()
         neg_num = len(pred) - pos_num

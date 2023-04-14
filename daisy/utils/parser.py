@@ -13,6 +13,9 @@ def parse_args():
     parser.add_argument('--tune_pack', 
                         type=str, 
                         help='record the searching space of hyper-parameters for HyperOpt')
+    parser.add_argument('--path',
+                        type=str,
+                        help='record the searching space of hyper-parameters for HyperOpt')
     # common settings
     parser.add_argument('--algo_name', 
                         type=str, 
