@@ -68,8 +68,8 @@ class MF(GeneralRecommender):
         return pred
 
     def calc_loss(self, batch):
-        user = batch[0].to(self.device)
-        pos_item = batch[1].to(self.device)
+        user = batch[0].long().to(self.device)
+        pos_item = batch[1].long().to(self.device)
         pos_pred = self.forward(user, pos_item)
 
         if self.loss_type.upper() in ['CL', 'SL']:
@@ -80,7 +80,7 @@ class MF(GeneralRecommender):
             loss += self.reg_1 * (self.embed_item(pos_item).norm(p=1))
             loss += self.reg_2 * (self.embed_item(pos_item).norm())
         elif self.loss_type.upper() in ['BPR', 'TL', 'HL']:
-            neg_item = batch[2].to(self.device)
+            neg_item = batch[2].long().to(self.device)
             neg_pred = self.forward(user, neg_item)
             loss = self.criterion(pos_pred, neg_pred)
 
@@ -93,7 +93,7 @@ class MF(GeneralRecommender):
         # add regularization term
         loss += self.reg_1 * (self.embed_user(user).norm(p=1))
         loss += self.reg_2 * (self.embed_user(user).norm())
-
+        #print(loss.item())
         return loss
 
     def predict(self, u, i):
@@ -125,10 +125,11 @@ class MF(GeneralRecommender):
 
     def full_rank(self, u):
         u = torch.tensor(u, device=self.device)
-
         user_emb = self.embed_user(u)
-        items_emb = self.embed_item.weight 
+        items_emb = self.embed_item.weight
         scores = torch.matmul(user_emb, items_emb.transpose(1, 0)) #  (item_num,)
 
-        return torch.argsort(scores, descending=True)[:self.topk].cpu().numpy()
+        print(scores.shape)
+
+        return torch.argsort(scores, descending=True, dim=1)[:self.topk].cpu().numpy()
 

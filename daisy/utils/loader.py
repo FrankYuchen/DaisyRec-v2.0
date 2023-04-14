@@ -19,8 +19,12 @@ class RawDataReader(object):
         self.tid_name = config['TID_NAME']
         self.inter_name = config['INTER_NAME']
         self.logger = config['logger']
+        self.path = config['path']
 
-        self.ds_path = f"{config['data_path']}{self.src}/"
+
+        #self.ds_path = f"{config['data_path']}{self.src}/"
+        self.ds_path = f"{config['data_path']}"
+
         ensure_dir(self.ds_path)
         self.logger.info(f'Current data path is: {self.ds_path}, make sure you put the right raw data into it...')
 
@@ -35,7 +39,11 @@ class RawDataReader(object):
             fp = f'{self.ds_path}ratings.dat'
             df = pd.read_csv(fp, sep='::', header=None, 
                             names=[self.uid_name, self.iid_name, self.inter_name, self.tid_name], engine='python')
-        
+        elif self.src == 'ml-25m':
+            fp = self.ds_path+self.path
+            df = pd.read_csv(fp)
+            #print('here: ', fp)
+            df.rename(columns={'userId': self.uid_name, 'movieId': self.iid_name}, inplace=True)
         elif self.src == 'ml-10m':
             fp = f'{self.ds_path}ratings.dat'
             df = pd.read_csv(fp, sep='::', header=None, 
@@ -135,7 +143,6 @@ class RawDataReader(object):
             # fake timestamp column
             df[self.tid_name] = 1
             df[self.inter_name] = 1.0
-
         else:
             raise NotImplementedError('Invalid Dataset Error')
         
@@ -174,6 +181,7 @@ class Preprocessor(object):
         self.item_pop = None
 
     def process(self, df):
+        print(df)
         df = self.__remove_duplication(df)
         df = self.__reserve_pos(df)
         df = self.__binary_inter(df)

@@ -26,9 +26,9 @@ init_method: 'default'
 optimizer: 'default'
 early_stop: True
 
-data_path: 'data/'
+data_path: 'ml-25m-all/'
 res_path: ~
-dataset: 'ml-100k'
+dataset: 'ml-25m'
 prepro: 10filter
 level: ui
 UID_NAME: user

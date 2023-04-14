@@ -55,6 +55,8 @@ def init_config(param_dict=None):
 
         args = parse_args()
         algo_name = config['algo_name'] if args.algo_name is None else args.algo_name
+        config['path'] = args.path
+        config['gpu'] = args.gpu
         model_init_file = os.path.join(current_path, f'../assets/{algo_name}.yaml')
         model_conf = yaml.load(
             open(model_init_file), Loader=yaml.loader.SafeLoader)
