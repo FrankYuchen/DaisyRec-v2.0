@@ -121,7 +121,7 @@ if __name__ == '__main__':
 
     #f = open(tune_log_path + f"best_params_{config['loss_type']}_{config['algo_name']}_{config['dataset']}_{config['prepro']}_{config['val_method']}.csv", 'w', encoding='utf-8')
     f = open(
-        tune_log_path + 'best_params_'+config['loss_type']+'_'+config['algo_name']+'_'+config['dataset']+'_'+config['prepro']+'_'+config['val_method']+'.csv',
+        tune_log_path + 'best_params_'+config['loss_type']+'_'+config['algo_name']+'_'+config['dataset']+'_'+config['prepro']+'_'+config['val_method']+config['path'][:-4]+'.csv',
         'w', encoding='utf-8')
 
     line = ','.join(tune_param_names) + ','+kpi_name
