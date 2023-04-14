@@ -142,4 +142,4 @@ class VAECF(AERecommender):
         rating_matrix = self.get_user_rating_matrix(u)
         scores, _, _ = self.forward(rating_matrix)
 
-        return torch.argsort(scores.view(-1), descending=True)[:self.topk].cpu().numpy()
+        return torch.argsort(scores.view(-1), descending=True).cpu().numpy()#[:self.topk].cpu().numpy()

@@ -136,7 +136,7 @@ if __name__ == '__main__':
     print(df['item'].nunique())
     config['user_num'] = user_num
     config['item_num'] = item_num
-    config['topk'] = item_num
+    #config['topk'] = item_num
 
     ''' Train Test split '''
     splitter = TestSplitter(config)
@@ -174,11 +174,15 @@ if __name__ == '__main__':
         cnt, kpis = 1, []
         for train_index, val_index in splitter.split(train_set):
             train, validation = train_set.iloc[train_index, :].copy(), train_set.iloc[val_index, :].copy()
+
             #get raw data
             raw_rated = dict(train.groupby(by=config['UID_NAME'])[config['IID_NAME']].unique())
             rated = {}
             for user in raw_rated:
                 rated[user] = set(raw_rated[user])
+                #print(len(raw_rated[user]))
+
+
 
             ''' get ground truth '''
             val_ur = get_ur(validation)
@@ -231,19 +235,19 @@ if __name__ == '__main__':
             #val_dataset = CandidatesDataset(val_ucands)
             #val_loader = get_dataloader(val_dataset, batch_size=128, shuffle=False, num_workers=0)
             preds = model.full_rank(val_u)
-
-            print('Number of test: ', len(val_u))
+            #print(preds.shape)
+            #print('Number of test: ', len(val_u))
             final_preds = []  # preds after filtering
-            count = 0
+            #count = 0
             for user_index in range(len(val_u)):
                 user = val_u[user_index]
                 recommended = []
                 index = 0
-                while len(recommended) != 10:
+                while len(recommended) != config['topk']:
                     if preds[user_index, index] not in rated[user]:
                         recommended.append(preds[user_index, index])
-                        if preds[user_index, index] == list(val_ur[user])[0]:
-                            count+=1
+                        # if preds[user_index, index] == list(val_ur[user])[0]:
+                        #     count+=1
 
                     index += 1
 

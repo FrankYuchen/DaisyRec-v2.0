@@ -131,5 +131,5 @@ class MF(GeneralRecommender):
 
         print(scores.shape)
 
-        return torch.argsort(scores, descending=True, dim=1)[:self.topk].cpu().numpy()
+        return torch.argsort(scores, descending=True, dim=1).cpu().numpy()#[:self.topk].cpu().numpy()
 
