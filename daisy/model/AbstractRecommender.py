@@ -6,7 +6,7 @@ import torch.optim as optim
 
 from daisy.utils.loss import BPRLoss, TOP1Loss, HingeLoss
 
-
+#device = 'cuda:0'
 class AbstractRecommender(nn.Module):
     def __init__(self):
         super(AbstractRecommender, self).__init__()
@@ -97,7 +97,9 @@ class GeneralRecommender(AbstractRecommender):
         super(GeneralRecommender, self).__init__()
 
         os.environ['CUDA_VISIBLE_DEVICES'] = config['gpu']
+        print('gpu: ', config['gpu'])
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        print(self.device)
         self.logger = config['logger']
 
     def fit(self, train_loader):
@@ -117,6 +119,8 @@ class GeneralRecommender(AbstractRecommender):
             pbar.set_description(f'[Epoch {epoch:03d}]')
             for batch in pbar:
                 self.zero_grad()
+
+                #batch = batch.to(device)
                 loss = self.calc_loss(batch)
 
                 if torch.isnan(loss):
@@ -126,6 +130,7 @@ class GeneralRecommender(AbstractRecommender):
                 optimizer.step()
 
                 current_loss += loss.item()
+            print(current_loss)
             pbar.set_postfix(loss=current_loss)
 
             self.eval()
