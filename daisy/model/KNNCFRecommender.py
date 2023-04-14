@@ -453,8 +453,8 @@ class ItemKNNCF(GeneralRecommender):
 
     def full_rank(self, u):
         scores = self.pred_mat[u, :].A.squeeze()
-
-        return np.argsort(-scores)[:self.topk]
+        #print(scores.shape)
+        return np.argsort(-scores,axis=-1)[:, :self.topk]
 
 class UserKNNCF(GeneralRecommender):
     def __init__(self, config):
