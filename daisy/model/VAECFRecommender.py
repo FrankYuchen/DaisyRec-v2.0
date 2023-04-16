@@ -44,7 +44,7 @@ class VAECF(AERecommender):
         self.item_num = config['item_num']
 
         self.history_item_id = config['history_item_id'].to(self.device)
-        print(self.history_item_id)
+        print('history item: ', self.history_item_id)
         self.history_item_value = config['history_item_value'].to(self.device)
         self.update = 0
 
