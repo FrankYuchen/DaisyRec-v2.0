@@ -236,7 +236,7 @@ if __name__ == '__main__':
             #val_loader = get_dataloader(val_dataset, batch_size=128, shuffle=False, num_workers=0)
             preds = model.full_rank(val_u)
             #print(preds.shape)
-            #print('Number of test: ', len(val_u))
+            print('Number of test: ', len(val_u))
             final_preds = []  # preds after filtering
             #count = 0
             for user_index in range(len(val_u)):
