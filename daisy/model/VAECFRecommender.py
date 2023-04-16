@@ -138,7 +138,7 @@ class VAECF(AERecommender):
         return rec_ids.cpu().numpy()
 
     def full_rank(self, u):
-        u = torch.tensor([u], device=self.device)
+        u = torch.tensor(u, device=self.device)
         rating_matrix = self.get_user_rating_matrix(u)
         scores, _, _ = self.forward(rating_matrix)
 
