@@ -127,17 +127,31 @@ if __name__ == '__main__':
     print('number of test: ', len(test_u))
     preds = model.full_rank(test_u) # np.array (u, topk)
     #preds: [num_users, num_items]
-    final_preds = [] #preds after filtering
-    for user_index in range(len(test_u)):
-        user = test_u[user_index]
-        recommended = []
-        index = 0
-        while len(recommended) != config['topk']:
-            if preds[user_index,index] not in rated[user]:
-                recommended.append(preds[user_index,index])
-            index+=1
-        final_preds.append(np.asarray(recommended))
-    final_preds = np.asarray(final_preds)
+
+    if config['algo'] == 'mostpop':
+        final_preds = [] #preds after filtering
+        for user_index in range(len(test_u)):
+            user = test_u[user_index]
+            recommended = []
+            index = 0
+            while len(recommended) != config['topk']:
+                if preds[index] not in rated[user]:
+                    recommended.append(preds[index])
+                index+=1
+            final_preds.append(np.asarray(recommended))
+        final_preds = np.asarray(final_preds)
+    else:
+        final_preds = [] #preds after filtering
+        for user_index in range(len(test_u)):
+            user = test_u[user_index]
+            recommended = []
+            index = 0
+            while len(recommended) != config['topk']:
+                if preds[user_index,index] not in rated[user]:
+                    recommended.append(preds[user_index,index])
+                index+=1
+            final_preds.append(np.asarray(recommended))
+        final_preds = np.asarray(final_preds)
 
 
 
