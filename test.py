@@ -128,7 +128,7 @@ if __name__ == '__main__':
     preds = model.full_rank(test_u) # np.array (u, topk)
     #preds: [num_users, num_items]
 
-    if config['algo'] == 'mostpop':
+    if config['algo_name'] == 'mostpop':
         final_preds = [] #preds after filtering
         for user_index in range(len(test_u)):
             user = test_u[user_index]
