@@ -160,9 +160,9 @@ if __name__ == '__main__':
             final_preds.append(np.asarray(recommended))
         final_preds = np.asarray(final_preds)
         results = calc_ranking_results(test_ur, final_preds, test_u, config)
-        results_5.append([seed]+list(results['5'].values))
-        results_10.append([seed] + list(results['10'].values))
-        results_20.append([seed] + list(results['20'].values))
+        results_5.append([seed]+list(results[5].values))
+        results_10.append([seed] + list(results[10].values))
+        results_20.append([seed] + list(results[20].values))
 
 
 
