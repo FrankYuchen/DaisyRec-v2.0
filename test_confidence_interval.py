@@ -44,6 +44,9 @@ if __name__ == '__main__':
     config = init_config()
 
     ''' init seed for reproducibility '''
+    results_5 = []
+    results_10 = []
+    results_20 = []
     for seed in range(2022, 2022 + 3):
         config['seed'] = seed
         init_seed(config['seed'], config['reproducibility'])
@@ -86,9 +89,7 @@ if __name__ == '__main__':
         total_train_ur = get_ur(train_set)
         config['train_ur'] = total_train_ur
 
-        results_5 = []
-        results_10 = []
-        results_20 = []
+
         ''' calculating KPIs '''
         logger.info('Save metric@k result to res folder...')
         result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/confidence_interval/"
