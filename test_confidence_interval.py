@@ -49,7 +49,7 @@ if __name__ == '__main__':
     results_20 = []
     for seed in range(2022, 2022 + 3):
         config['seed'] = seed
-        init_seed(config['seed'], config['reproducibility'])
+        init_seed(config['seed'], False)
         #init_seed(config['seed'], config['reproducibility'])
 
         ''' init logger '''
