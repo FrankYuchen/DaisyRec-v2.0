@@ -44,59 +44,61 @@ if __name__ == '__main__':
     config = init_config()
 
     ''' init seed for reproducibility '''
-    init_seed(config['seed'], config['reproducibility'])
-
-    ''' init logger '''
-    init_logger(config)
-    logger = getLogger()
-    logger.info(config)
-    config['logger'] = logger
-
-    ''' Test Process for Metrics Exporting '''
-    reader, processor = RawDataReader(config), Preprocessor(config)
-    df = reader.get_data()
-    df = processor.process(df)
-    user_num, item_num = processor.user_num, processor.item_num
-
-    config['user_num'] = user_num
-    config['item_num'] = item_num
-
-    ''' Train Test split '''
-    splitter = TestSplitter(config)
-    train_index, test_index = splitter.split(df)
-    train_set, test_set = df.iloc[train_index, :].copy(), df.iloc[test_index, :].copy()
-
-    # get rated data
-    raw_rated = dict(train_set.groupby(by=config['UID_NAME'])[config['IID_NAME']].unique())
-    rated = {}
-    for user in raw_rated:
-        rated[user] = set(raw_rated[user])
-
-    # get parameters
-    best_params = pd.read_csv(
-        'tune_res/best_params_BPR_' + config['algo_name'] + '_' + config['dataset'] + '_origin_tloo_' + config['path'])
-    for col in best_params.columns[:-1]:
-        config[col] = best_params.loc[0, col]
-
-    ''' get ground truth '''
-    test_ur = get_ur(test_set)
-    total_train_ur = get_ur(train_set)
-    config['train_ur'] = total_train_ur
-
-    results_5 = []
-    results_10 = []
-    results_20 = []
-    ''' calculating KPIs '''
-    logger.info('Save metric@k result to res folder...')
-    result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/confidence_interval/"
-    algo_prefix = f"{config['loss_type']}_{config['algo_name']}"
-    common_prefix = f"with_{config['sample_ratio']}{config['sample_method']}"
-
-    ensure_dir(result_save_path)
-    config['res_path'] = result_save_path
-    for seed in range(2022,2022+3):
+    for seed in range(2022, 2022 + 3):
         config['seed'] = seed
         init_seed(config['seed'], config['reproducibility'])
+        #init_seed(config['seed'], config['reproducibility'])
+
+        ''' init logger '''
+        init_logger(config)
+        logger = getLogger()
+        logger.info(config)
+        config['logger'] = logger
+
+        ''' Test Process for Metrics Exporting '''
+        reader, processor = RawDataReader(config), Preprocessor(config)
+        df = reader.get_data()
+        df = processor.process(df)
+        user_num, item_num = processor.user_num, processor.item_num
+
+        config['user_num'] = user_num
+        config['item_num'] = item_num
+
+        ''' Train Test split '''
+        splitter = TestSplitter(config)
+        train_index, test_index = splitter.split(df)
+        train_set, test_set = df.iloc[train_index, :].copy(), df.iloc[test_index, :].copy()
+
+        # get rated data
+        raw_rated = dict(train_set.groupby(by=config['UID_NAME'])[config['IID_NAME']].unique())
+        rated = {}
+        for user in raw_rated:
+            rated[user] = set(raw_rated[user])
+
+        # get parameters
+        best_params = pd.read_csv(
+            'tune_res/best_params_BPR_' + config['algo_name'] + '_' + config['dataset'] + '_origin_tloo_' + config['path'])
+        for col in best_params.columns[:-1]:
+            config[col] = best_params.loc[0, col]
+
+        ''' get ground truth '''
+        test_ur = get_ur(test_set)
+        total_train_ur = get_ur(train_set)
+        config['train_ur'] = total_train_ur
+
+        results_5 = []
+        results_10 = []
+        results_20 = []
+        ''' calculating KPIs '''
+        logger.info('Save metric@k result to res folder...')
+        result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/confidence_interval/"
+        algo_prefix = f"{config['loss_type']}_{config['algo_name']}"
+        common_prefix = f"with_{config['sample_ratio']}{config['sample_method']}"
+
+        ensure_dir(result_save_path)
+        config['res_path'] = result_save_path
+
+
         ''' build and train model '''
         s_time = time.time()
         if config['algo_name'].lower() in ['itemknn', 'puresvd', 'slim', 'mostpop', 'ease']:
