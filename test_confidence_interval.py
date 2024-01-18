@@ -160,7 +160,7 @@ if __name__ == '__main__':
 
     ''' calculating KPIs '''
     logger.info('Save metric@k result to res folder...')
-    result_save_path = f"./res/confidence_interval/{config['dataset']}/{config['prepro']}/{config['test_method']}/"
+    result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/confidence_interval/"
     algo_prefix = f"{config['loss_type']}_{config['algo_name']}"
     common_prefix = f"with_{config['sample_ratio']}{config['sample_method']}"
 
