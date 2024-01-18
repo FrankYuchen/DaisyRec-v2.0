@@ -34,6 +34,7 @@ class PureSVD(GeneralRecommender):
         self.item_vec = None
 
         self.topk = config['topk']
+        self.config = config
 
     def fit(self, train_set):
         self.logger.info("Computing SVD decomposition...")
@@ -41,7 +42,7 @@ class PureSVD(GeneralRecommender):
         self.logger.info('Finish build train matrix for decomposition')
         U, sigma, Vt = randomized_svd(train_set,
                                       n_components=self.factors,
-                                      random_state=2019)
+                                      random_state=self.config['seed'])
         s_Vt = sp.diags(sigma) * Vt
 
         self.user_vec = U
