@@ -47,7 +47,7 @@ if __name__ == '__main__':
     results_5 = []
     results_10 = []
     results_20 = []
-    for seed in range(2022, 2022 + 3):
+    for seed in range(2019, 2019 + 50):
         config['seed'] = seed
         init_seed(config['seed'], config['reproducibility'])
         #init_seed(config['seed'], config['reproducibility'])
