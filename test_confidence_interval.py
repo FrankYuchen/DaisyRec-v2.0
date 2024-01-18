@@ -96,6 +96,7 @@ if __name__ == '__main__':
     config['res_path'] = result_save_path
     for seed in range(2022,2022+3):
         config['seed'] = seed
+        init_seed(config['seed'], config['reproducibility'])
         ''' build and train model '''
         s_time = time.time()
         if config['algo_name'].lower() in ['itemknn', 'puresvd', 'slim', 'mostpop', 'ease']:
@@ -169,9 +170,9 @@ if __name__ == '__main__':
 
 
     path = config['path']
-    results_5_df = pd.DataFrame(results_5)
-    results_10_df = pd.DataFrame(results_10)
-    results_20_df = pd.DataFrame(results_20)
+    results_5_df = pd.DataFrame(results_5,columns = ['Recall','MRR', 'NDCG','HR','Precision'])
+    results_10_df = pd.DataFrame(results_10,columns = ['Recall','MRR', 'NDCG','HR','Precision'])
+    results_20_df = pd.DataFrame(results_20,columns = ['Recall','MRR', 'NDCG','HR','Precision'])
 
     results_5_df.to_csv(f'{result_save_path}{algo_prefix}_{common_prefix}_top5_{path}', index=False)
     results_10_df.to_csv(f'{result_save_path}{algo_prefix}_{common_prefix}_top10_{path}', index=False)
