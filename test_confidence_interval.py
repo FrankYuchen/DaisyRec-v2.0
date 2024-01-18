@@ -170,9 +170,9 @@ if __name__ == '__main__':
 
 
     path = config['path']
-    results_5_df = pd.DataFrame(results_5,columns = ['Recall','MRR', 'NDCG','HR','Precision'])
-    results_10_df = pd.DataFrame(results_10,columns = ['Recall','MRR', 'NDCG','HR','Precision'])
-    results_20_df = pd.DataFrame(results_20,columns = ['Recall','MRR', 'NDCG','HR','Precision'])
+    results_5_df = pd.DataFrame(results_5,columns = ['seed','Recall','MRR', 'NDCG','HR','Precision'])
+    results_10_df = pd.DataFrame(results_10,columns = ['seed','Recall','MRR', 'NDCG','HR','Precision'])
+    results_20_df = pd.DataFrame(results_20,columns = ['seed','Recall','MRR', 'NDCG','HR','Precision'])
 
     results_5_df.to_csv(f'{result_save_path}{algo_prefix}_{common_prefix}_top5_{path}', index=False)
     results_10_df.to_csv(f'{result_save_path}{algo_prefix}_{common_prefix}_top10_{path}', index=False)
