@@ -86,7 +86,14 @@ if __name__ == '__main__':
     results_5 = []
     results_10 = []
     results_20 = []
+    ''' calculating KPIs '''
+    logger.info('Save metric@k result to res folder...')
+    result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/confidence_interval/"
+    algo_prefix = f"{config['loss_type']}_{config['algo_name']}"
+    common_prefix = f"with_{config['sample_ratio']}{config['sample_method']}"
 
+    ensure_dir(result_save_path)
+    config['res_path'] = result_save_path
     for seed in range(2022,2022+3):
         config['seed'] = seed
         ''' build and train model '''
@@ -158,14 +165,7 @@ if __name__ == '__main__':
         results_20.append([seed] + list(results['20'].values))
 
 
-    ''' calculating KPIs '''
-    logger.info('Save metric@k result to res folder...')
-    result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/confidence_interval/"
-    algo_prefix = f"{config['loss_type']}_{config['algo_name']}"
-    common_prefix = f"with_{config['sample_ratio']}{config['sample_method']}"
 
-    ensure_dir(result_save_path)
-    config['res_path'] = result_save_path
 
 
     path = config['path']
