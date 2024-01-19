@@ -29,6 +29,7 @@ class PureSVD(GeneralRecommender):
         self.user_num = config['user_num']
         self.item_num = config['item_num']
         self.factors = config['factors']
+        print(self.factors)
 
         self.user_vec = None
         self.item_vec = None
