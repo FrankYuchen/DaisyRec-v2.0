@@ -96,7 +96,7 @@ class GeneralRecommender(AbstractRecommender):
     def __init__(self, config):
         super(GeneralRecommender, self).__init__()
 
-        os.environ['CUDA_VISIBLE_DEVICES'] = config['gpu']
+        #os.environ['CUDA_VISIBLE_DEVICES'] = config['gpu']
         print('gpu: ', config['gpu'])
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         print(self.device)
