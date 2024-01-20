@@ -34,7 +34,7 @@ class VAECF(AERecommender):
         self.epochs = config['epochs']
         self.lr = config['lr']
         self.dropout = config['dropout']
-
+        self.device = 'cuda:'+config['gpu']
         self.layers = config["mlp_hidden_size"] if config['mlp_hidden_size'] is not None else [600]
         self.lat_dim = config['latent_dim']
         self.anneal_cap = config['anneal_cap']
@@ -139,8 +139,9 @@ class VAECF(AERecommender):
         return rec_ids.cpu().numpy()
 
     def full_rank(self, u):
-        u = torch.tensor(u, device=self.device)
+        u = torch.tensor([u], device=self.device)
         rating_matrix = self.get_user_rating_matrix(u)
         scores, _, _ = self.forward(rating_matrix)
-
-        return torch.argsort(scores, descending=True, dim=-1).cpu().numpy()#[:self.topk].cpu().numpy()
+        #print(torch.max(scores), scores[0][torch.argsort(scores, descending=True, dim=-1).cpu().numpy()[0][0]])
+        #print(len(torch.argsort(scores, descending=True, dim=-1).cpu().numpy()[0]))
+        return torch.argsort(scores, descending=True, dim=-1).cpu().numpy()[0]#[:self.topk].cpu().numpy()
