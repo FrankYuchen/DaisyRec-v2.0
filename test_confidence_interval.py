@@ -82,7 +82,11 @@ if __name__ == '__main__':
         best_params = pd.read_csv(
             'tune_res/best_params_BPR_' + config['algo_name'] + '_' + config['dataset'] + '_origin_tloo_' + config['path'])
         for col in best_params.columns[:-1]:
-            config[col] = best_params.loc[0, col]
+            if col == 'batch_size':
+                config[col] = int(best_params.loc[0, col])
+            else:
+                config[col] = best_params.loc[0, col]
+
 
         ''' get ground truth '''
         test_ur = get_ur(test_set)
