@@ -153,17 +153,33 @@ if __name__ == '__main__':
         test_dataset = CandidatesDataset(test_ucands)
         test_loader = get_dataloader(test_dataset, batch_size=128, shuffle=False, num_workers=0)
         print('number of test: ', len(test_u))
-        preds = model.full_rank(test_u)  # np.array (u, topk)
-        # preds: [num_users, num_items]
+        # preds = model.full_rank(test_u)  # np.array (u, topk)
+        # # preds: [num_users, num_items]
+        # final_preds = []  # preds after filtering
+        # config['topk'] = 20
+        # for user_index in range(len(test_u)):
+        #     user = test_u[user_index]
+        #     recommended = []
+        #     index = 0
+        #     while len(recommended) != config['topk']:
+        #         if preds[user_index, index] not in rated[user]:
+        #             recommended.append(preds[user_index, index])
+        #         index += 1
+        #     final_preds.append(np.asarray(recommended))
+        # final_preds = np.asarray(final_preds)
+        #
+        preds = []
+        for user in test_u:
+            pred = model.full_rank(user)
+            preds.append(pred)
         final_preds = []  # preds after filtering
-        config['topk'] = 20
         for user_index in range(len(test_u)):
             user = test_u[user_index]
             recommended = []
             index = 0
             while len(recommended) != config['topk']:
-                if preds[user_index, index] not in rated[user]:
-                    recommended.append(preds[user_index, index])
+                if preds[user_index][index] not in rated[user]:
+                    recommended.append(preds[user_index][index])
                 index += 1
             final_preds.append(np.asarray(recommended))
         final_preds = np.asarray(final_preds)
