@@ -168,6 +168,7 @@ if __name__ == '__main__':
         #     final_preds.append(np.asarray(recommended))
         # final_preds = np.asarray(final_preds)
         #
+        config['topk'] = 20
         preds = []
         for user in test_u:
             pred = model.full_rank(user)
