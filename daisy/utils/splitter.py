@@ -77,7 +77,7 @@ def split_test(df, test_method='rsbr', test_size=.2, uid='user', tid='timestamp'
         train_ids = np.setdiff1d(df.index.values, test_ids)
 
     elif test_method == 'tloo': # utloo
-        print(df)
+        #print(df)
         df['rank_latest'] = df.groupby([uid])[tid].rank(method='first', ascending=False)
         train_ids, test_ids = df.index.values[df['rank_latest'] > 1], df.index.values[df['rank_latest'] == 1]
         del df['rank_latest']
@@ -175,7 +175,7 @@ def split_validation(train_set, val_method='rsbr', fold_num=1, val_size=.1, uid=
             val_set_list.append(val_ids)
 
     elif val_method == 'tloo':
-        print(train_set.head())
+        #print(train_set.head())
         train_set['rank_latest'] = train_set.groupby([uid])[tid].rank(method='first', ascending=False)
         train_ids = train_set.index.values[train_set['rank_latest'] > 1]
         val_ids = train_set.index.values[train_set['rank_latest'] == 1]

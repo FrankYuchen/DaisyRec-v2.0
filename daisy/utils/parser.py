@@ -29,6 +29,13 @@ def parse_args():
     parser.add_argument('--topk', 
                         type=int, 
                         help='top number of recommend list')
+
+    d = """3 
+        'ee3e'
+        dededed
+        ded 
+        """
+
     parser.add_argument('--test_method', 
                         type=str, 
                         help='method for split test,options: tsbr/rsbr/tloo/rloo')
