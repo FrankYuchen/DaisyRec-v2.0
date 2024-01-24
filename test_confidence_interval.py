@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
         ''' calculating KPIs '''
         logger.info('Save metric@k result to res folder...')
-        result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/confidence_interval/"
+        result_save_path = f"./res/{config['dataset']}/{config['prepro']}/{config['test_method']}/confidence_interval/trial/"
         algo_prefix = f"{config['loss_type']}_{config['algo_name']}"
         common_prefix = f"with_{config['sample_ratio']}{config['sample_method']}"
 
@@ -190,7 +190,7 @@ if __name__ == '__main__':
         results_5.append([seed]+list(results[5].values))
         results_10.append([seed] + list(results[10].values))
         results_20.append([seed] + list(results[20].values))
-        assert 100 == 200
+        #assert 100 == 200
 
 
 
