@@ -104,7 +104,7 @@ if __name__ == '__main__':
                     config[col] = int(best_params.loc[0, col])
                 else:
                     config[col] = best_params.loc[0, col]
-            print(config)
+            #print(config)
 
 
             ''' get ground truth '''
