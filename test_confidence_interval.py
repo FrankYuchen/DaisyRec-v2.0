@@ -42,15 +42,18 @@ model_config = {
 if __name__ == '__main__':
     ''' summarize hyper-parameter part (basic yaml + args + model yaml) '''
 
-    # for path_in_server in ['2015rem15.csv','B2015rem15.csv','S2015rem15.csv','SS2015rem15.csv','SSS2015rem15.csv',
-    #                        '2016all.csv', '2016rem15.csv','B2016rem15.csv','S2016rem15.csv','SS2016rem15.csv','SSS2016rem15.csv',
+    # for path_in_server in [
+    #                        'ML25M 2015-2018 35f.csv'
+    #                        ]:
+    # for path_in_server in [
     #                        '2017all.csv', '2017rem15.csv', 'B2017rem15.csv', 'S2017rem15.csv', 'SS2017rem15.csv',
     #                        'SSS2017rem15.csv',
     #                        '2018all.csv', '2018rem15.csv', 'B2018rem15.csv', 'S2018rem15.csv', 'SS2018rem15.csv',
     #                        'SSS2018rem15.csv'
     #                        ]:
     for path_in_server in [
-                           'ML25M 2015-2018 35f.csv'
+                           '2017all.csv', '2017rem15.csv', 'B2017rem15.csv', 'S2017rem15.csv', 'SS2017rem15.csv',
+                           'SSS2017rem15.csv'
                            ]:
 
         config = init_config()
