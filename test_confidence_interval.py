@@ -52,7 +52,7 @@ if __name__ == '__main__':
     #                        'SSS2018rem15.csv'
     #                        ]:
     for path_in_server in [
-                           'rem15.csv', 'Brem15.csv', 'Srem15.csv', 'SSrem15.csv',
+                           'Brem15.csv', 'Srem15.csv', 'SSrem15.csv',
                            'SSSrem15.csv'
                            ]:
 
