@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #                        ]:
     for path_in_server in [
                            'rem15.csv', 'Brem15.csv', 'Srem15.csv', 'SSrem15.csv',
-                           'SSSrem15.csv', "ML25M 2015-20215 35f.csv"
+                           'SSSrem15.csv'
                            ]:
 
         config = init_config()
