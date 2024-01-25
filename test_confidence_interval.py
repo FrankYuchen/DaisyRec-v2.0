@@ -50,7 +50,7 @@ if __name__ == '__main__':
     #                        'SSS2018rem15.csv'
     #                        ]:
     for path_in_server in [
-                           '2018all.csv'
+                           'ML25M 2015-2018 35f.csv'
                            ]:
 
         config = init_config()
