@@ -52,7 +52,7 @@ if __name__ == '__main__':
     #                        'SSS2018rem15.csv'
     #                        ]:
     for path_in_server in [
-                           'rem15.csv'
+                           'SSrem15.csv','SSSrem15.csv'
                            ]:
 
         config = init_config()
@@ -64,8 +64,8 @@ if __name__ == '__main__':
         results_20 = []
 
         num_times = 30
-        if path_in_server[0] == 'S':
-            num_times = 10
+        # if path_in_server[0] == 'S':
+        #     num_times = 10
 
         for seed in range(2019, 2019 + num_times):
             config['seed'] = seed
